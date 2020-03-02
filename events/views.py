@@ -1,10 +1,25 @@
+from django.contrib import messages
+from django.db.models import F
+from django.db.models import Q
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.views import View
-from .forms import UserSignup, UserLogin
+from .forms import UserSignup, UserLogin, CreateForm, BookForm
+from django.contrib import messages
+from .models import Event, Booking
+from datetime import datetime
 
 def home(request):
-    return render(request, 'home.html')
+    events=Event.objects.filter(datetime__gte=datetime.today())
+    search_result=''
+    search=request.GET.get("search")
+    if search:
+        search_term = request.GET['search']
+        events=events.filter(Q(title__icontains=search)|Q(description__icontains=search)|Q(added_by__username__icontains=search)).distinct()
+    context = {
+    "events": events,
+    "search_result": search_result, }
+    return render(request, 'home.html', context)
 
 class Signup(View):
     form_class = UserSignup
@@ -59,3 +74,105 @@ class Logout(View):
         messages.success(request, "You have successfully logged out.")
         return redirect("login")
 
+
+def event_list(request):
+    if request.user.is_anonymous:
+        return redirect("login")
+    events = Event.objects.filter(datetime__gte=datetime.today())
+    context = {"events": events}
+    return render(request, 'event_list.html', context)
+
+def my_list(request):
+    events = Event.objects.all()
+    context = {"events": events}
+    return render(request, 'my_list.html', context)
+
+def create_event(request):
+    if request.user.is_anonymous:
+        return redirect("login")
+    form = CreateForm()
+    if request.method == "POST":
+        form = CreateForm(request.POST, request.FILES)
+        if form.is_valid():
+            event = form.save(commit=False)
+            event.added_by = request.user
+            event.save()
+            return redirect('event-list')
+    context = {
+        "form":form,
+    }
+    return render(request, 'create_event.html', context)
+
+def event_detail(request, event_id):
+    event = Event.objects.get(id=event_id)
+    bookers=Booking.objects.filter(event=event)
+    context = {
+        "event": event,
+        "bookers": bookers,
+        }
+    return render(request, 'event_detail.html', context)
+
+def event_update(request, event_id):
+    event_obj = Event.objects.get(id=event_id)
+    form = CreateForm(instance=event_obj)
+    if request.method == "POST":
+        form = CreateForm(request.POST, request.FILES, instance=event_obj)
+        if form.is_valid():
+            form.save()
+            return redirect('event-list')
+    context = {
+        "event_obj": event_obj,
+        "form":form,
+    }
+    return render(request, 'event_update.html', context)
+
+def dashboard(request):
+    events=Event.objects.all()
+    context= {"events":events}
+    return render(request,'dashboard.html',context)
+
+
+def booking(request,event_id):
+    event = Event.objects.get(id=event_id)
+    seats = event.seats
+    form = BookForm()
+    if request.method == "POST":
+        form = BookForm(request.POST)
+        if form.is_valid():
+            tickets = form.save(commit=False)
+            tickets.tickets_num = event
+            tickets.booker=request.user
+            tickets.event=event
+            tickets.save()
+            event = Event.objects.get(id=event_id)
+            event.seats =  event.seats - tickets.tickets
+            if event.seats < 0:
+                messages.warning(request,'Not Available!!')
+                return redirect('event-detail',event_id)
+            event.save()
+
+        return redirect('event-book',event_id)
+    context = {
+        "event": event,
+        "form": form,
+    }
+    return render(request, 'booking.html', context)
+
+
+
+def tracking(request):
+    event=Booking.objects.all()
+    form = BookForm()
+    if request.method == "POST":
+        form = BookForm(request.POST)
+        if form.is_valid():
+            tickets = form.save(commit=False)
+            tickets.booker = event
+            tickets.save()
+            event=Booking.objects.all()
+            event.save()
+        return redirect('event-book')
+    context = {
+        "event": event,
+        "form":form,}
+    return render(request,'tracking.html',context)

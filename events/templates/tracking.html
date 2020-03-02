@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}My Events{% endblock title %}
+{% block content %}
+<!DOCTYPE html>
+<br><br><br>
+<table class="table">
+<thead>
+<tr>
+<th scope="col">Title</th>
+<th scope="col">Location</th>
+<th scope="col">Date</th>
+<th scope="col">Seats</th>
+<th scope="col">Organizer</th>
+</tr>
+</thead>
+<tbody>
+{% for event in events %}
+<tr>
+<!-- <th scope="row">{{event.id}}</th> -->
+<!-- {% if request.user == event.added_by %} -->
+<td>{{event.title}}</td>
+<td>{{event.location}}</td>
+<td>{{event.datetime}}</td>
+<td>{{event.seats}}</td>
+<td>{{event.added_by}}</td>
+<!-- {% endif %} -->
+</tr>
+{% endfor %}
+</table>
+{% endblock content %}
