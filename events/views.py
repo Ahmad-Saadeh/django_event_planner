@@ -157,22 +157,3 @@ def booking(request,event_id):
         "form": form,
     }
     return render(request, 'booking.html', context)
-
-
-
-def tracking(request):
-    event=Booking.objects.all()
-    form = BookForm()
-    if request.method == "POST":
-        form = BookForm(request.POST)
-        if form.is_valid():
-            tickets = form.save(commit=False)
-            tickets.booker = event
-            tickets.save()
-            event=Booking.objects.all()
-            event.save()
-        return redirect('event-book')
-    context = {
-        "event": event,
-        "form":form,}
-    return render(request,'tracking.html',context)
