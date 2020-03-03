@@ -14,7 +14,6 @@ def home(request):
     search_result=''
     search=request.GET.get("search")
     if search:
-        search_term = request.GET['search']
         events=events.filter(Q(title__icontains=search)|Q(description__icontains=search)|Q(added_by__username__icontains=search)).distinct()
     context = {"events": events,"search_result": search_result, }
     return render(request, 'home.html', context)
