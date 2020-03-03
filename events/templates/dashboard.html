@@ -45,6 +45,14 @@
 {% endfor %}
 </table>
   </div>
+
+  <h1>Atended Events</h1>
+  {% for event in list_of_passed_event %}
+
+      <p> {{ event.title }} {{event.datetime}}</p>
+
+
+  {% endfor %}
 </header>
 
 

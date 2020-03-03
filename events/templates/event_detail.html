@@ -25,7 +25,7 @@
     <a href="{% url 'event-update' event.id %}" class="btn btn-primary btn-xl rounded-pill mt-5">Update</a>
     {% endif %}
   </div>
-
+{% if request.user == event.added_by %}
   <h1>People in this event</h1>
             {% for someone in bookers %}
             <div class="col-md-12">
@@ -36,6 +36,7 @@
                 </div>
             </div>
             {% endfor %}
+                {% endif %}
 <br><br><br><br><br><br><br><br>
 
 {% endblock content %}

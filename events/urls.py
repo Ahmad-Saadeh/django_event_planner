@@ -1,5 +1,6 @@
 from django.urls import path
 from .views import Login, Logout, Signup, home,event_list, create_event, event_detail, event_update, dashboard, my_list,booking
+from apievents import views
 #from events import views
 urlpatterns = [
 	path('', home, name='home'),
@@ -14,7 +15,9 @@ urlpatterns = [
 	path('my_list/', my_list,name='my-list'),
 	path('booking/<int:event_id>', booking,name='event-book'),
 
-	# path('details/', view_detail, name='view-detail')
+	# API paths
+
+	path('apilist/', views.EventList.as_view()),
 
 
 

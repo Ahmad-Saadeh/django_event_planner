@@ -16,9 +16,7 @@ def home(request):
     if search:
         search_term = request.GET['search']
         events=events.filter(Q(title__icontains=search)|Q(description__icontains=search)|Q(added_by__username__icontains=search)).distinct()
-    context = {
-    "events": events,
-    "search_result": search_result, }
+    context = {"events": events,"search_result": search_result, }
     return render(request, 'home.html', context)
 
 class Signup(View):
@@ -98,18 +96,13 @@ def create_event(request):
             event.added_by = request.user
             event.save()
             return redirect('event-list')
-    context = {
-        "form":form,
-    }
+    context = {"form":form,}
     return render(request, 'create_event.html', context)
 
 def event_detail(request, event_id):
     event = Event.objects.get(id=event_id)
     bookers=Booking.objects.filter(event=event)
-    context = {
-        "event": event,
-        "bookers": bookers,
-        }
+    context = {"event": event,"bookers": bookers,}
     return render(request, 'event_detail.html', context)
 
 def event_update(request, event_id):
@@ -120,15 +113,24 @@ def event_update(request, event_id):
         if form.is_valid():
             form.save()
             return redirect('event-list')
-    context = {
-        "event_obj": event_obj,
-        "form":form,
-    }
+    context = {"event_obj": event_obj,"form":form,}
     return render(request, 'event_update.html', context)
 
 def dashboard(request):
     events=Event.objects.all()
-    context= {"events":events}
+    # ssss = Booking.objects.filter(booker=request.user)
+    # dddd= Event.objects.filter(datetime__lt=datetime.today())
+    passed = Booking.objects.filter(booker=request.user,event__datetime__lt=datetime.today())
+    list_of_passed_event = []
+    for some_event in passed:
+        if some_event in list_of_passed_event:
+            pass
+        else:
+            list_of_passed_event.append(Event.objects.get(id=some_event.event.id))
+    # bla=Event.objects.filter(datetime__lt=datetime.today().date
+    # passed = bla.filter(added_by=request.user)
+    # event.added_by==request.user,datetime__gte=datetime.today()--event.date__lt=datetime.today().date()
+    context= {"events":events,"list_of_passed_event":list_of_passed_event}
     return render(request,'dashboard.html',context)
 
 
@@ -140,7 +142,7 @@ def booking(request,event_id):
         form = BookForm(request.POST)
         if form.is_valid():
             tickets = form.save(commit=False)
-            tickets.tickets_num = event
+            tickets.event = event
             tickets.booker=request.user
             tickets.event=event
             tickets.save()
@@ -152,8 +154,5 @@ def booking(request,event_id):
             event.save()
 
         return redirect('event-book',event_id)
-    context = {
-        "event": event,
-        "form": form,
-    }
+    context = {"event": event,"form": form,}
     return render(request, 'booking.html', context)
