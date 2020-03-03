@@ -2,9 +2,10 @@
 {% block title %}Detail{% endblock title %}
 {% block content %}
 
-<div class="card" style="width: 18rem;">
-  <img class="card-img-top" src="..." alt="Card image cap">
-  <div class="card-body">
+<div class="card animate" style="width: 40%;text-align: center;">
+  {% load static %}
+    <img class="card-img-top" src="{% static "img/welcometoJordan.jpg" %}" height="300px"  alt="Card image cap">
+  <div>
     <h5 class="card-title">{{event.title}}</h5>
     <p class="card-text">{{event.description}}</p>
   </div>
@@ -14,7 +15,7 @@
     <li class="list-group-item">Available Seats: {{event.seats}}</li>
     <li class="list-group-item">By: {{event.added_by}}</li>
   </ul>
-  <div class="card-body">
+  <div style="text-align:center;margin:3px;">
     {% if event.seats == 0 %}
       <a href="#" class="btn btn-warning" disabled>Full</a>
     {% else %}

@@ -259,3 +259,7 @@ form.osaid {
     flex-flow: row nowrap;
     place-content: flex-end;
 }
+
+.animate {
+  transform: translate(83%, -10%);
+}
