@@ -17,7 +17,6 @@ class Event(models.Model):
 
 
 class Booking(models.Model):
-    tickets_num=models.ForeignKey(Event, on_delete=models.CASCADE,blank=True,null=True)
     tickets=models.PositiveIntegerField()
     booker = models.ForeignKey(User, on_delete = models.CASCADE,related_name='booker',blank=True,null=True)
     event = models.ForeignKey(Event, on_delete = models.CASCADE, related_name='booker',blank=True,null=True) #changed related name from booker to boo
