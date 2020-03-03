@@ -1,21 +1,18 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
-
 {% block title %}Create Event{% endblock title %}
-
 {% block content %}
-
-<br>
-<div class="card">
-  <h5 class="card-header">Create Event</h5>
-  <div class="card-body">
-    <p class="card-text">
-        <form action="{% url 'create-event' %}" method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
-            {{form|crispy}}
-            <input type="submit" value="Create" class="btn btn-outline-success">
-        </form>
-    </p>
-  </div>
+  <div class="form-container">
+    <h3 class="card-header form-title">Create Event</h3>
+    <div class="card-body">
+        <p class="card-text">
+            <form class="osaid" action="{% url 'create-event' %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{form|crispy}}
+                <input type="submit" value="Create Event" class="btn btn-outline-warning btn-block">
+                <br>
+            </form>
+        </p>
+    </div>
 </div>
 {% endblock content %}

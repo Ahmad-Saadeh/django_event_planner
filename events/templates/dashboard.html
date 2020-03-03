@@ -1,60 +1,68 @@
 {% extends "base.html" %}
-
 {% block content %}
-<header class="masthead text-center text-white">
-  <div class="bg-circle-1 bg-circle"></div>
-  <div class="bg-circle-2 bg-circle"></div>
-  <div class="bg-circle-3 bg-circle"></div>
-  <div class="bg-circle-4 bg-circle"></div>
-  <div class="masthead-content">
-    <div class="container">
-      <h1 class="masthead-heading mb-0">All the events,</h1>
-      <h2 class="masthead-subheading mb-0">You could ever want...</h2>
-
-      {% if not request.user.is_anonymous %}
-      <a href="{% url 'create-event' %}" class="btn btn-primary btn-xl rounded-pill mt-1">Create events!</a>
-      <a href="{% url 'my-list' %}" class="btn btn-primary btn-xl rounded-pill mt-1">My events!</a>
-      {% endif %}
+<header class="masthead text-center text-warning">
+    <div class="masthead-content">
+        <div class="container">
+            <h1 class="masthead-heading mb-0">All the events,</h1>
+            <h2 class="masthead-subheading mb-0">You could ever want...</h2>
+            {% if not request.user.is_anonymous %}
+            <div class="btn-icons">
+            <a href="{% url 'create-event' %}" class="btn btn-warning btn-xl rounded-pill mt-1">Create events!</a>
+            <a href="{% url 'my-list' %}" class="btn btn-warning btn-xl rounded-pill mt-1">My events!</a>
+            </div>
+            {% endif %}
+        </div>
     </div>
-    <table class="table">
-<thead>
-<tr>
-  <th scope="col">Title</th>
-  <th scope="col">Location</th>
-  <th scope="col">Date</th>
-  <th scope="col">Seats</th>
-  <th scope="col">Organizer</th>
-</tr>
-</thead>
-<tbody>
-{% for event in events %}
-<tr>
-  <!-- <th scope="row">{{event.id}}</th> -->
-  {% if request.user == event.added_by %}
-  <td>{{event.title}}</td>
-  <td>{{event.location}}</td>
-  <td>{{event.datetime}}</td>
-  <td>{{event.seats}}</td>
-  <td>{{event.added_by}}</td>
-  {% endif %}
-    {% if request.user == events.added_by %}
-  <td><a href="{% url 'event-update'  classroom.id event.id %}" class="btn" style="background-color: #000034; color: white;">Update</a>
-  <a href="{% url 'event-delete' classroom.id event.id %}" class="btn" style="background-color: #FFA500; color: #000034;">Delete</a></td>
-  {% endif %}
-</tr>
-{% endfor %}
-</table>
-  </div>
-
-  <h1>Atended Events</h1>
-  {% for event in list_of_passed_event %}
-
-      <p> {{ event.title }} {{event.datetime}}</p>
-
-
-  {% endfor %}
 </header>
 
+    <table class="table table-hover table-dark">
+        <thead>
+            <tr>
+                <th scope="col">Title</th>
+                <th scope="col">Location</th>
+                <th scope="col">Date</th>
+                <th scope="col">Seats</th>
+                <th scope="col">Organizer</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for event in events %}
+            <tr>
+                {% if request.user == event.added_by %}
+                <td>{{event.title}}</td>
+                <td>{{event.location}}</td>
+                <td>{{event.datetime}}</td>
+                <td>{{event.seats}}</td>
+                <td>{{event.added_by}}</td>
+                {% endif %}
+                {% if request.user == events.added_by %}
+                <td><a href="{% url 'event-update'  classroom.id event.id %}" class="btn" style="background-color: #000034; color: white;">Update</a>
+                    <a href="{% url 'event-delete' classroom.id event.id %}" class="btn" style="background-color: #FFA500; color: #000034;">Delete</a></td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+    </table>
+
+
+    <h1 class="events-attended">Events I (Booked)Attended</h1>
+    <table class="table table-hover table-dark" style="text-align: center;">
+      <thead>
+          <tr>
+              <th scope="col">Event</th>
+              <th scope="col">Date</th>
+              <th scope="col">Number of tickets</th>
+          </tr>
+      </thead>
+      <tbody>
+    {% for booking in passed %}
+    <tr>
+        <td>{{booking.event.title}}</td>
+        <td>{{booking.event.datetime}}</td>
+        <td>{{booking.tickets}}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
 
 
 {% endblock %}

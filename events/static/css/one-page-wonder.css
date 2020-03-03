@@ -152,3 +152,110 @@ header.masthead .bg-circle-4 {
 .btn-secondary:focus {
   box-shadow: 0 0 0 0.2rem rgba(255, 106, 0, 0.5);
 }
+
+.nav.navbar-nav {
+  display:flex;
+  flex-flow: row nowrap;
+}
+
+.site-name {
+  display: inline-block;
+  line-height: 3.3;
+}
+
+.logo {
+  margin-right: 30px;
+}
+
+.fas , .far {
+  margin-right: 5px;
+}
+
+.nav-link {
+  font-size: 20px;
+  margin: 0px 20px;
+}
+
+.card-body {
+  height: 100vh;
+  width: 100%;
+}
+
+header.masthead.text-center.text-warning {
+  background-image: url("https://crossfadr.com/wp-content/uploads/2018/10/fest-1.jpg");
+}
+
+.event-card {
+  height: 250px;
+  margin: 15px;
+}
+
+.card-body {
+  align-content: center;
+  display: flex;
+  flex-flow: column;
+  justify-content: space-around;
+}
+
+.card-body h2 {
+  text-align: center;
+}
+
+.btn-icons {
+  margin-top: 42px;
+}
+
+.events-list {
+  background: black;
+}
+
+.form-inline.my-2.my-lg-0 {
+  display: block;
+  width: 100%;
+  text-align: center;
+}
+
+.row.events-list {
+  padding: 15px;
+}
+
+.btn-icons  a {
+  margin: 10px;
+}
+
+form.osaid {
+  position: relative;
+  top: 30%;
+  color: white;
+  font-size: 15px;
+}
+
+.form-title {
+  color: white;
+  text-align: center;
+}
+
+.events-attended {
+  text-align: center;
+}
+
+.form-container {
+    width: 100%;
+    overflow: scroll;
+    overflow-x: hidden;
+    background: black;
+}
+
+.form-container {
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+    scrollbar-width: none;  /* Firefox */
+}
+.form-container::-webkit-scrollbar {
+    display: none;  /* Safari and Chrome */
+}
+
+.table-title {
+    display: flex;
+    flex-flow: row nowrap;
+    place-content: flex-end;
+}

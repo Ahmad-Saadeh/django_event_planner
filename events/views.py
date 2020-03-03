@@ -80,7 +80,9 @@ def event_list(request):
     return render(request, 'event_list.html', context)
 
 def my_list(request):
-    events = Event.objects.all()
+    if request.user.is_anonymous:
+        return redirect("login")
+    events = Event.objects.filter(added_by=request.user)
     context = {"events": events}
     return render(request, 'my_list.html', context)
 
@@ -117,19 +119,8 @@ def event_update(request, event_id):
 
 def dashboard(request):
     events=Event.objects.all()
-    # ssss = Booking.objects.filter(booker=request.user)
-    # dddd= Event.objects.filter(datetime__lt=datetime.today())
     passed = Booking.objects.filter(booker=request.user,event__datetime__lt=datetime.today())
-    list_of_passed_event = []
-    for some_event in passed:
-        if some_event in list_of_passed_event:
-            pass
-        else:
-            list_of_passed_event.append(Event.objects.get(id=some_event.event.id))
-    # bla=Event.objects.filter(datetime__lt=datetime.today().date
-    # passed = bla.filter(added_by=request.user)
-    # event.added_by==request.user,datetime__gte=datetime.today()--event.date__lt=datetime.today().date()
-    context= {"events":events,"list_of_passed_event":list_of_passed_event}
+    context= {"events":events,"passed":passed}
     return render(request,'dashboard.html',context)
 
 
@@ -144,13 +135,11 @@ def booking(request,event_id):
             tickets.event = event
             tickets.booker=request.user
             tickets.event=event
-            tickets.save()
-            event = Event.objects.get(id=event_id)
-            event.seats =  event.seats - tickets.tickets
-            if event.seats < 0:
+            if event.seats < tickets.tickets:
                 messages.warning(request,'Not Available!!')
                 return redirect('event-detail',event_id)
             event.save()
+            tickets.save()
 
         return redirect('event-book',event_id)
     context = {"event": event,"form": form,}
