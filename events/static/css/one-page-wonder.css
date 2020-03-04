@@ -263,3 +263,18 @@ form.osaid {
 .animate {
   transform: translate(83%, -10%);
 }
+
+/* .navbar-nav .nav-link {
+    padding-right: 0;
+    padding-left: 0;
+    color: black!important;
+} */
+.cool{
+  color: black !important;
+}
+
+.form-inline .form-control {
+    display: inline-block;
+    width: 50%;
+    vertical-align: middle;
+}

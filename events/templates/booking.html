@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
 {% load crispy_forms_tags %}
-<!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
@@ -10,12 +9,12 @@
   <body>
     <div class="masthead-content">
       <div class="container">
-          <div class="jumbotron">
-            <h2 class="masthead-subheading mb-0" style="color:white;text-align:center;">book</h2>
-            <form action="{% url 'event-book' event.id %}" method="POST">
+          <div class="jumbotron"    style="transform: translate(17px, 100px);" >
+            <h2 class="masthead-subheading mb-0" style="color:white;text-align:center;">Book Now !</h2>
+            <form style="color:white" action="{% url 'event-book' event.id %}" method="POST">
               {% csrf_token %}
               {{form|crispy}}
-              <input  style="margin-left: 39%;" class = "btn btn-warning btn-xl rounded-pill mt-5" type="submit" value="Book Now" name="book">
+              <input   style="margin-left: 39%;" class = "btn btn-warning btn-xl rounded-pill mt-5" type="submit" value="Book Now" name="book">
             </form>
         </div>
       </div>

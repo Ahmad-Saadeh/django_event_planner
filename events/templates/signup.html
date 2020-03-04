@@ -1,22 +1,23 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
-<header class="masthead text-center text-white">
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
     <div class="masthead-content">
-        <div class="container">
+      <div class="container" style="transform:translate(28px, -20px);"">
             <div class="jumbotron">
-                <h2 class="masthead-subheading mb-0">Sign Up</h2>
-                <form action="{% url 'signup' %}" method="POST">
+                <h2 class="masthead-subheading mb-0" style="color:yellow;text-align:center;">Sign Up</h2>
+                <form action="{% url 'signup' %}" method="POST" style="color: yellow;">
                     {% csrf_token %}
                     {{form|crispy}}
-                    <input class="btn btn-warning btn-xl rounded-pill mt-5" type="submit" value="Sign Up">
-                </form>
+                    <input  style="margin-left: 39%; transform: translate(41px, -22px);" class="btn btn-warning btn-xl rounded-pill mt-5" type="submit" value="Sign Up">
+                  </form>
+              </div>
             </div>
-        </div>
-    </div>
-    <div class="bg-circle-1 bg-circle"></div>
-    <div class="bg-circle-2 bg-circle"></div>
-    <div class="bg-circle-3 bg-circle"></div>
-    <div class="bg-circle-4 bg-circle"></div>
-</header>
+        </body>
+      </html>
 {% endblock %}

@@ -135,12 +135,13 @@ def booking(request,event_id):
             tickets.event = event
             tickets.booker=request.user
             tickets.event=event
-            if event.seats < tickets.tickets:
+            event.seats = event.seats - tickets.tickets
+            if event.seats < 0:
                 messages.warning(request,'Not Available!!')
                 return redirect('event-detail',event_id)
             event.save()
             tickets.save()
 
-        return redirect('event-book',event_id)
+        return redirect('event-detail',event_id)
     context = {"event": event,"form": form,}
     return render(request, 'booking.html', context)
